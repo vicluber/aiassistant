@@ -1,0 +1,46 @@
+{
+    "name": "effective/aiassistant",
+    "type": "typo3-cms-extension",
+    "description": "",
+    "authors": [
+        {
+            "name": "Victor Willhuber",
+            "role": "Developer"
+        }
+    ],
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "typo3/cms-core": "^12.4"
+    },
+    "require-dev": {
+        "typo3/testing-framework": "^6.9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Effective\\Aiassistant\\": "Classes"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Effective\\Aiassistant\\Tests\\": "Tests"
+        }
+    },
+    "replace": {
+        "typo3-ter/aiassistant": "self.version"
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
+        ]
+    },
+    "extra": {
+        "typo3/cms": {
+            "web-dir": ".Build/Web",
+            "extension-key": "aiassistant"
+        }
+    }
+}

@@ -1,0 +1,29 @@
+plugin.tx_aiassistant_chatform {
+    view {
+        # cat=plugin.tx_aiassistant_chatform/file; type=string; label=Path to template root (FE)
+        templateRootPath = EXT:aiassistant/Resources/Private/Templates/
+        # cat=plugin.tx_aiassistant_chatform/file; type=string; label=Path to template partials (FE)
+        partialRootPath = EXT:aiassistant/Resources/Private/Partials/
+        # cat=plugin.tx_aiassistant_chatform/file; type=string; label=Path to template layouts (FE)
+        layoutRootPath = EXT:aiassistant/Resources/Private/Layouts/
+    }
+    persistence {
+        # cat=plugin.tx_aiassistant_chatform//a; type=string; label=Default storage PID
+        storagePid =
+    }
+}
+
+module.tx_aiassistant_createaiassistant {
+    view {
+        # cat=module.tx_aiassistant_createaiassistant/file; type=string; label=Path to template root (BE)
+        templateRootPath = EXT:aiassistant/Resources/Private/Backend/Templates/
+        # cat=module.tx_aiassistant_createaiassistant/file; type=string; label=Path to template partials (BE)
+        partialRootPath = EXT:aiassistant/Resources/Private/Backend/Partials/
+        # cat=module.tx_aiassistant_createaiassistant/file; type=string; label=Path to template layouts (BE)
+        layoutRootPath = EXT:aiassistant/Resources/Private/Backend/Layouts/
+    }
+    persistence {
+        # cat=module.tx_aiassistant_createaiassistant//a; type=string; label=Default storage PID
+        storagePid =
+    }
+}

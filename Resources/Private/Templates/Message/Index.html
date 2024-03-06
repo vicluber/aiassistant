@@ -1,0 +1,51 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default" />
+<f:section name="content">
+    
+    <div id="result">
+      <div class="text-center"><img src="{f:uri.resource(path: 'EXT:aiassistant/Resources/Public/Icons/ellipsis.gif')}" width="100" alt="Ellipsis" id="ellipsis" /></div>
+    </div>
+    
+      <f:flashMessages />
+      <f:render partial="FormErrors" />
+      <f:form action="create" name="newMessage" object="{newMessage}" id="simpleForm">
+        <div class="mb-3">
+          <label for="userPrompt" class="form-label"><f:translate key="tx_aiassistant_domain_model_message.user_prompt" />:</label>
+          <f:form.textarea property="userPrompt" id="userPrompt" class="form-control" name="userPrompt" rows="3" required="required" />
+        </div>
+        <f:form.submit value="Send" class="btn btn-primary mb-3" />
+      </f:form>
+    <script>
+      $(document).ready(function() {
+        let i = 0;
+        $('#ellipsis').hide();
+        $('#simpleForm').submit(function(event) {
+            $('#ellipsis').show();
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function(response) {
+                  let jsonResponse = JSON.parse(response)
+                  $('#ellipsis').hide();
+                  $('#result').append('<div class="text-right">' + $('#userPrompt').val() + '</div>')
+                  $('#result').append('<div class="text-left" id="assistantAnswer" style="background-color: #feffb8; padding: 20px;"><p>' + jsonResponse.answer + '</p><button id="toggleCitation" data-citation="'+i+'" class="btn btn-info">File Citation</button></div>');
+                  $('#assistantAnswer').append('<div class="text-left" style="display: none;" id="fileCitation'+i+'"><p>' + jsonResponse.file_citation + '</p></div>');
+                  $('#simpleForm').trigger("reset");
+                  i++
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", status, error);
+                }
+            });
+        });
+        $('#result').on('click', '#toggleCitation', function() {
+            var citationId = $(this).data('citation');
+            $('#fileCitation' + citationId).toggle();
+        });
+      });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</f:section>
+</html>

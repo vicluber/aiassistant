@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3DataStructure>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>Assistant Chat Form Configuration</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <settings.propertyName>
+                        <TCEforms>
+                            <label>Assistant ID</label>
+                            <config>
+                                <type>input</type>
+                                <size>60</size>
+                            </config>
+                        </TCEforms>
+                    </settings.propertyName>
+                </el>
+            </ROOT>
+        </sDEF>
+    </sheets>
+</T3DataStructure>

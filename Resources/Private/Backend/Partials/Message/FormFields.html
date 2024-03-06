@@ -1,0 +1,30 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<label for="userPrompt">
+	<f:translate key="tx_aiassistant_domain_model_message.user_prompt" />
+</label><br />
+	<f:form.textarea property="userPrompt" id="userPrompt" cols="40" rows="15" /><br />
+<label for="assistantAnswer">
+	<f:translate key="tx_aiassistant_domain_model_message.assistant_answer" />
+</label><br />
+	<f:form.textarea property="assistantAnswer" id="assistantAnswer" cols="40" rows="15" /><br />
+<label for="fileCitation">
+	<f:translate key="tx_aiassistant_domain_model_message.file_citation" />
+</label><br />
+	<f:form.textarea property="fileCitation" id="fileCitation" cols="40" rows="15" /><br />
+<label for="thread">
+	<f:translate key="tx_aiassistant_domain_model_message.thread" />
+</label><br />
+	<f:form.textfield property="thread" id="thread" /><br />
+<label for="promptTokens">
+	<f:translate key="tx_aiassistant_domain_model_message.prompt_tokens" />
+</label><br />
+	<f:form.textfield property="promptTokens" id="promptTokens" /><br />
+<label for="completionTokens">
+	<f:translate key="tx_aiassistant_domain_model_message.completion_tokens" />
+</label><br />
+	<f:form.textfield property="completionTokens" id="completionTokens" /><br />
+<label for="fileId">
+	<f:translate key="tx_aiassistant_domain_model_message.file_id" />
+</label><br />
+	<f:form.textfield property="fileId" id="fileId" /><br />
+</html>

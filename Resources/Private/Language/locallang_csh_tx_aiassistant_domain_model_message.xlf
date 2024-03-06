@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:aiassistant/Resources/Private/Language/locallang_csh_tx_aiassistant_domain_model_message.xlf" date="2024-03-04T13:39:57Z" product-name="aiassistant">
+		<header/>
+		<body>
+			<trans-unit id="user_prompt.description" resname="user_prompt.description">
+				<source>userPrompt</source>
+			</trans-unit>
+			<trans-unit id="assistant_answer.description" resname="assistant_answer.description">
+				<source>assistantAnswer</source>
+			</trans-unit>
+			<trans-unit id="file_citation.description" resname="file_citation.description">
+				<source>fileCitation</source>
+			</trans-unit>
+			<trans-unit id="thread.description" resname="thread.description">
+				<source>thread</source>
+			</trans-unit>
+			<trans-unit id="prompt_tokens.description" resname="prompt_tokens.description">
+				<source>promptTokens</source>
+			</trans-unit>
+			<trans-unit id="completion_tokens.description" resname="completion_tokens.description">
+				<source>completionTokens</source>
+			</trans-unit>
+			<trans-unit id="file_id.description" resname="file_id.description">
+				<source>fileId</source>
+			</trans-unit>
+			<trans-unit id="assistant.description" resname="assistant.description">
+				<source>The assistant who has sent this message</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
