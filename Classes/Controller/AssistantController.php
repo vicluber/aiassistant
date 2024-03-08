@@ -52,16 +52,6 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     }
 
     /**
-     * action index
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function indexAction(): \Psr\Http\Message\ResponseInterface
-    {
-        return $this->htmlResponse();
-    }
-
-    /**
      * action list
      *
      * @return \Psr\Http\Message\ResponseInterface
@@ -92,12 +82,7 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     public function newAction(): \Psr\Http\Message\ResponseInterface
     {
-        $response = $this->client->models()->list();
-        $models = [];
-        foreach ($response->data as $model) {
-            $models[$model->id] = $model->id;
-        }
-        $this->view->assign('models', $models);
+        $this->view->assign('models', $this->requestModels());
         return $this->htmlResponse();
     }
 
@@ -108,24 +93,33 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     public function createAction(\Effective\Aiassistant\Domain\Model\Assistant $newAssistant)
     {
-        $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See https://docs.typo3.org/p/friendsoftypo3/extension-builder/master/en-us/User/Index.html', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-        $response = $this->client->assistants()->create([
-            'instructions' => $newAssistant->getInstructions(),
-            'name' => $newAssistant->getName(),
-            'tools' => [
-                [
-                    'type' => 'code_interpreter',
+        try {
+            $response = $this->client->assistants()->create([
+                'instructions' => $newAssistant->getInstructions(),
+                'name' => $newAssistant->getName(),
+                'tools' => [
+                    [
+                        'type' => 'code_interpreter',
+                    ],
                 ],
-            ],
-            'model' => $newAssistant->getModel(),
-        ]);
-        $newAssistant->setAssistantId($response->id);
-        $this->assistantRepository->add($newAssistant);
+                'model' => $newAssistant->getModel(),
+            ]);
+            if (isset($response->id)) {
+                $newAssistant->setAssistantId($response->id);
+                $this->assistantRepository->add($newAssistant);
+                $this->addFlashMessage('The object was successfully created.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+            } else {
+                $this->addFlashMessage('Failed to create the assistant. No ID was returned.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+            }
+        } catch (\Exception $e) {
+            $this->addFlashMessage('An error occurred while creating the assistant: ' . $e->getMessage(), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        }
         $absoluteTemplatePath = GeneralUtility::getFileAbsFileName('EXT:aiassistant/Resources/Private/Templates/Assistant/Show.html');
         $this->view->setTemplatePathAndFilename($absoluteTemplatePath);
         $this->view->assign('assistant', $newAssistant);
         return $this->htmlResponse();
     }
+
 
     /**
      * action edit
@@ -136,6 +130,7 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     public function editAction(\Effective\Aiassistant\Domain\Model\Assistant $assistant): \Psr\Http\Message\ResponseInterface
     {
+        $this->view->assign('models', $this->requestModels());
         $this->view->assign('assistant', $assistant);
         return $this->htmlResponse();
     }
@@ -147,7 +142,7 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     public function updateAction(\Effective\Aiassistant\Domain\Model\Assistant $assistant)
     {
-        $this->addFlashMessage('The object was updated. Please be aware that this action is publicly accessible unless you implement an access check. See https://docs.typo3.org/p/friendsoftypo3/extension-builder/master/en-us/User/Index.html', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        $this->addFlashMessage('The object was updated. Please be aware that this action is publicly accessible unless you implement an access check.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
         $this->assistantRepository->update($assistant);
         $this->redirect('list');
     }
@@ -159,8 +154,34 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     public function deleteAction(\Effective\Aiassistant\Domain\Model\Assistant $assistant)
     {
-        $this->addFlashMessage('The object was deleted. Please be aware that this action is publicly accessible unless you implement an access check. See https://docs.typo3.org/p/friendsoftypo3/extension-builder/master/en-us/User/Index.html', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-        $this->assistantRepository->remove($assistant);
-        $this->redirect('list');
+        try {
+            $response = $this->client->assistants()->delete($assistant->getAssistantId());
+            if (isset($response->deleted) && $response->deleted) {
+                $this->assistantRepository->remove($assistant);
+                $this->addFlashMessage('The assistant was successfully deleted.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+            } else {
+                $this->addFlashMessage('Deletion was not successful.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+            }
+        } catch (\Exception $e) {
+            $this->addFlashMessage('An error occurred while deleting the assistant: ' . $e->getMessage(), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        }
+        $absoluteTemplatePath = GeneralUtility::getFileAbsFileName('EXT:aiassistant/Resources/Private/Templates/Assistant/List.html');
+        $this->view->setTemplatePathAndFilename($absoluteTemplatePath);
+        $assistants = $this->assistantRepository->findAll();
+        $this->view->assign('assistants', $assistants);
+        return $this->htmlResponse();
+    }
+    
+    /**
+     * action request models array
+     */
+    public function requestModels() : array
+    {
+        $response = $this->client->models()->list();
+        $models = [];
+        foreach ($response->data as $model) {
+            $models[$model->id] = $model->id;
+        }
+        return $models;
     }
 }

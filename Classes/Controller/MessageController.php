@@ -67,16 +67,6 @@ class MessageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     }
 
     /**
-     * action index
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function indexAction(): \Psr\Http\Message\ResponseInterface
-    {
-        return $this->htmlResponse();
-    }
-
-    /**
      * action list
      *
      * @return \Psr\Http\Message\ResponseInterface
@@ -120,10 +110,7 @@ class MessageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $assistant = $this->client->assistants()->retrieve($this->assistantID);
         $thread = $this->client->threads()->create([]);
         $message = $this->client->threads()->messages()->create($thread->id, ['role' => 'user', 'content' => $newMessage->getUserPrompt()]);
-        $run = $response = $this->client->threads()->runs()->create(
-        threadId: $thread->id,
-        parameters: ['assistant_id' => $this->assistantID]
-        );
+        $run = $response = $this->client->threads()->runs()->create(threadId: $thread->id, parameters: ['assistant_id' => $this->assistantID]);
         try {
             // FIX THIS; DONT CHECK ALL THE MESSAGES JUST GET THE LAST ONE
             $completedRun = $this->fetchRunResult($this->client, $run->id, $thread->id);
@@ -185,42 +172,5 @@ class MessageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             // Wait for a bit before checking again
             sleep($pollInterval);
         }
-    }
-
-    /**
-     * action edit
-     *
-     * @param \Effective\Aiassistant\Domain\Model\Message $message
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation("message")
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function editAction(\Effective\Aiassistant\Domain\Model\Message $message): \Psr\Http\Message\ResponseInterface
-    {
-        $this->view->assign('message', $message);
-        return $this->htmlResponse();
-    }
-
-    /**
-     * action update
-     *
-     * @param \Effective\Aiassistant\Domain\Model\Message $message
-     */
-    public function updateAction(\Effective\Aiassistant\Domain\Model\Message $message)
-    {
-        $this->addFlashMessage('The object was updated. Please be aware that this action is publicly accessible unless you implement an access check. See https://docs.typo3.org/p/friendsoftypo3/extension-builder/master/en-us/User/Index.html', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-        $this->messageRepository->update($message);
-        $this->redirect('list');
-    }
-
-    /**
-     * action delete
-     *
-     * @param \Effective\Aiassistant\Domain\Model\Message $message
-     */
-    public function deleteAction(\Effective\Aiassistant\Domain\Model\Message $message)
-    {
-        $this->addFlashMessage('The object was deleted. Please be aware that this action is publicly accessible unless you implement an access check. See https://docs.typo3.org/p/friendsoftypo3/extension-builder/master/en-us/User/Index.html', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-        $this->messageRepository->remove($message);
-        $this->redirect('list');
     }
 }

@@ -17,7 +17,6 @@ Otherwise your changes will be overwritten the next time you save the extension 
     <h1>Listing for Assistant</h1>
 
     <f:flashMessages />
-
     <table class="tx_aiassistant">
         <tr>
             <th><f:translate key="tx_aiassistant_domain_model_assistant.assistant_id" /></th>
@@ -27,7 +26,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
         </tr>
         <f:for each="{assistants}" as="assistant">
             <tr>
-                <td><f:link.action action="show" arguments="{assistant : assistant}">{assistant.name}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{assistant : assistant}">{assistant.assistantId}</f:link.action></td>
                 <td><f:link.action action="show" arguments="{assistant : assistant}">{assistant.instructions}</f:link.action></td>
                 <td><f:link.action action="show" arguments="{assistant : assistant}">{assistant.model}</f:link.action></td>
                 <td><f:link.action action="edit" arguments="{assistant : assistant}">Edit</f:link.action></td>

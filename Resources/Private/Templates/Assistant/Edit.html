@@ -21,7 +21,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
     <f:render partial="FormErrors" />
 
     <f:form action="update" name="assistant" object="{assistant}" >
-    <f:render partial="Assistant/FormFields" arguments="{assistant:assistant}" />
+    <f:render partial="Assistant/FormFields" arguments="{_all}" />
     <f:form.submit value="Save" />
     </f:form>
 </f:section>
