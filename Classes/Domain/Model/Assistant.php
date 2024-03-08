@@ -28,6 +28,13 @@ class Assistant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $assistantId = '';
 
     /**
+     * instructions
+     *
+     * @var string
+     */
+    protected $instructions = '';
+
+    /**
      * name
      *
      * @var string
@@ -66,13 +73,34 @@ class Assistant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * Sets the name
+     * Sets the instructions
      *
-     * @param string $name
+     * @param string $instructions
      * @return void
      */
-    public function setName(string $name)
+    public function setName(string $instructions)
     {
-        $this->name = $name;
+        $this->instructions = $instructions;
+    }
+
+    /**
+     * Returns the instructions
+     *
+     * @return string
+     */
+    public function getInstructions()
+    {
+        return $this->instructions;
+    }
+
+    /**
+     * Sets the instructions
+     *
+     * @param string $instructions
+     * @return void
+     */
+    public function setInstructions(string $instructions)
+    {
+        $this->instructions = $instructions;
     }
 }

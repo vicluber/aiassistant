@@ -104,7 +104,7 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     {
         $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See https://docs.typo3.org/p/friendsoftypo3/extension-builder/master/en-us/User/Index.html', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
         $response = $this->client->assistants()->create([
-            'instructions' => 'You are a personal math tutor. When asked a question, write and run Python code to answer the question.',
+            'instructions' => $newAssistant->getInstructions(),
             'name' => $newAssistant->getName(),
             'tools' => [
                 [
