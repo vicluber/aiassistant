@@ -73,14 +73,14 @@ class Assistant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * Sets the instructions
+     * Sets the name
      *
-     * @param string $instructions
+     * @param string $name
      * @return void
      */
-    public function setName(string $instructions)
+    public function setName(string $name)
     {
-        $this->instructions = $instructions;
+        $this->name = $name;
     }
 
     /**
