@@ -28,12 +28,11 @@ class Assistant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $assistantId = '';
 
     /**
-     * files
+     * name
      *
-     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Cascade("remove")
+     * @var string
      */
-    protected $files = null;
+    protected $name = '';
 
     /**
      * Returns the assistantId
@@ -57,23 +56,23 @@ class Assistant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * Returns the files
+     * Returns the name
      *
-     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     * @return string
      */
-    public function getFiles()
+    public function getName()
     {
-        return $this->files;
+        return $this->name;
     }
 
     /**
-     * Sets the files
+     * Sets the name
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $files
+     * @param string $name
      * @return void
      */
-    public function setFiles(\TYPO3\CMS\Extbase\Domain\Model\FileReference $files)
+    public function setName(string $name)
     {
-        $this->files = $files;
+        $this->name = $name;
     }
 }

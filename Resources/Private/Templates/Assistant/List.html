@@ -27,8 +27,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
         </tr>
         <f:for each="{assistants}" as="assistant">
             <tr>
-                <td><f:link.action action="show" arguments="{assistant : assistant}">{assistant.assistantId}</f:link.action></td>
-                <td><f:link.action action="show" arguments="{assistant : assistant}">{assistant.files.originalResource.name}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{assistant : assistant}">{assistant.name}</f:link.action></td>
                 <td><f:link.action action="edit" arguments="{assistant : assistant}">Edit</f:link.action></td>
                 <td><f:link.action action="delete" arguments="{assistant : assistant}">Delete</f:link.action></td>
             </tr>

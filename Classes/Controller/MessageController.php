@@ -22,10 +22,20 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
  */
 class MessageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
+    /**
+     * @var string
+     */
     protected $apiKey = null;
 
+    /**
+     *
+     * @var \OpenAI
+     */
     protected $client = null;
 
+    /**
+     * @var string
+     */
     protected $assistantID = null;
 
     /**
@@ -109,19 +119,12 @@ class MessageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         $assistant = $this->client->assistants()->retrieve($this->assistantID);
         $thread = $this->client->threads()->create([]);
-        $message = $this->client->threads()->messages()->create(
-        $thread->id,
-        [
-        'role' => 'user',
-        'content' => $newMessage->getUserPrompt()
-        ]
-        );
+        $message = $this->client->threads()->messages()->create($thread->id, ['role' => 'user', 'content' => $newMessage->getUserPrompt()]);
         $run = $response = $this->client->threads()->runs()->create(
         threadId: $thread->id,
         parameters: ['assistant_id' => $this->assistantID]
         );
         try {
-
             // FIX THIS; DONT CHECK ALL THE MESSAGES JUST GET THE LAST ONE
             $completedRun = $this->fetchRunResult($this->client, $run->id, $thread->id);
             $completedRun = $this->client->threads()->messages()->list($thread->id, ['limit' => 10]);

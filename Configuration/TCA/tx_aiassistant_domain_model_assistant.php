@@ -20,7 +20,7 @@ return [
         'iconfile' => 'EXT:aiassistant/Resources/Public/Icons/tx_aiassistant_domain_model_assistant.gif'
     ],
     'types' => [
-        '1' => ['showitem' => 'assistant_id, files, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language, sys_language_uid, l10n_parent, l10n_diffsource, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => 'assistant_id, name, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language, sys_language_uid, l10n_parent, l10n_diffsource, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -105,60 +105,16 @@ return [
                 'default' => ''
             ],
         ],
-        'files' => [
+        'name' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:aiassistant/Resources/Private/Language/locallang_db.xlf:tx_aiassistant_domain_model_assistant.files',
-            'description' => 'LLL:EXT:aiassistant/Resources/Private/Language/locallang_db.xlf:tx_aiassistant_domain_model_assistant.files.description',
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
-                'files',
-                [
-                    'appearance' => [
-                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.addFileReference'
-                    ],
-                    'overrideChildTca' => [
-                        'types' => [
-                            '0' => [
-                                'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                            ],
-                            \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => [
-                                'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                            ],
-                            \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
-                                'showitem' => '
-                                --palette--;;imageoverlayPalette,
-                                --palette--;;filePalette',
-                            ],
-                            \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => [
-                                'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                            ],
-                            \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => [
-                                'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                            ],
-                            \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => [
-                                'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                            ]
-                        ],
-                    ],
-                    'foreign_match_fields' => [
-                        'fieldname' => 'files',
-                        'tablenames' => 'tx_aiassistant_domain_model_assistant',
-                        'table_local' => 'sys_file',
-                    ],
-                    'maxitems' => 1
-                ]
-            ),
-            
-        ],
-    
+            'label' => 'LLL:EXT:aiassistant/Resources/Private/Language/locallang_db.xlf:tx_aiassistant_domain_model_assistant.name',
+            'description' => 'LLL:EXT:aiassistant/Resources/Private/Language/locallang_db.xlf:tx_aiassistant_domain_model_assistant.name.description',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim',
+                'default' => ''
+            ],
+        ]
     ],
 ];

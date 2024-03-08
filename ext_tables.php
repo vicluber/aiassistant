@@ -2,9 +2,10 @@
 defined('TYPO3') || die();
 
 (static function() {
+    // THIS WAY OF REGISTERING MODULES IS DEPRECATED - REMOVE LATER
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'Aiassistant',
-        'site',
+        'Effective.Aiassistant',
+        'web',
         'createaiassistant',
         '',
         [
@@ -15,7 +16,7 @@ defined('TYPO3') || die();
         [
             'access' => 'user,group',
             'icon'   => 'EXT:aiassistant/Resources/Public/Icons/user_mod_createaiassistant.svg',
-            'labels' => 'LLL:EXT:aiassistant/Resources/Private/Language/locallang_createaiassistant.xlf',
+            'labels' => 'Some label',
         ]
     );
 
