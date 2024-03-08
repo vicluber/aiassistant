@@ -7,6 +7,7 @@ use Effective\Aiassistant\Domain\Repository\MessageRepository;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use Effective\Aiassistant\Domain\Repository\AssistantRepository;
 
 /**
  * This file is part of the "OpenAI Asistant" Extension for TYPO3 CMS.
@@ -28,16 +29,16 @@ class MessageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     protected $apiKey = null;
 
     /**
+     * @var AssistantRepository
+     */
+    private $assistantRepository = null;
+
+    /**
      *
      * @var \OpenAI
      */
     protected $client = null;
-
-    /**
-     * @var string
-     */
-    protected $assistantID = null;
-
+    
     /**
      * messageRepository
      *
@@ -49,12 +50,13 @@ class MessageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * Constructor injection for messageRepository
      *
      * @param MessageRepository $messageRepository
+     * @param AssistantRepository $assistantRepository
      */
-    public function __construct(MessageRepository $messageRepository)
+    public function __construct(AssistantRepository $assistantRepository, MessageRepository $messageRepository)
     {
+        $this->assistantRepository = $assistantRepository;
         $this->messageRepository = $messageRepository;
         $this->apiKey = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('aiassistant', 'APIkey');
-        $this->assistantID = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('aiassistant', 'AssistantID');
         $this->client = \OpenAI::client($this->apiKey);
     }
 
@@ -65,6 +67,18 @@ class MessageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         $this->messageRepository = $messageRepository;
     }
+
+
+    /**
+     * action index
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function indexAction(): \Psr\Http\Message\ResponseInterface
+    {
+        return $this->htmlResponse();
+    }
+
 
     /**
      * action list
@@ -107,21 +121,28 @@ class MessageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function createAction(\Effective\Aiassistant\Domain\Model\Message $newMessage)
     {
-        $assistant = $this->client->assistants()->retrieve($this->assistantID);
+        if(isset($_POST['tx_aiassistant_chatform']['assistantId'])){
+            $assistantId = $_POST['tx_aiassistant_chatform']['assistantId'];
+            if(isset($assistant)){
+                $assistant = $this->assistantRepository->findOneByAssistantId($assistantId);
+                var_dump($assistant);
+                die();
+                $newMessage->setAssistant($assistant);
+            }
+        }
+        $assistant = $this->client->assistants()->retrieve($assistantId);
         $thread = $this->client->threads()->create([]);
         $message = $this->client->threads()->messages()->create($thread->id, ['role' => 'user', 'content' => $newMessage->getUserPrompt()]);
-        $run = $response = $this->client->threads()->runs()->create(threadId: $thread->id, parameters: ['assistant_id' => $this->assistantID]);
+        $run = $response = $this->client->threads()->runs()->create(threadId: $thread->id, parameters: ['assistant_id' => $assistantId]);
         try {
             // FIX THIS; DONT CHECK ALL THE MESSAGES JUST GET THE LAST ONE
             $completedRun = $this->fetchRunResult($this->client, $run->id, $thread->id);
             $completedRun = $this->client->threads()->messages()->list($thread->id, ['limit' => 10]);
             $response = $this->responseFactory->createResponse();
             $jsonArray = [
-            'answer' => $completedRun->toArray()['data'][0]['content'][0]['text']['value'],
-            'file_citation' => $completedRun->toArray()['data'][0]['content'][0]['text']['annotations'][0]['file_citation']['quote']
+            'answer' => $completedRun->toArray()['data'][0]['content'][0]['text']['value']
             ];
             $newMessage->setAssistantAnswer($jsonArray['answer']);
-            $newMessage->setFileCitation($jsonArray['file_citation']);
             $newMessage->setThread($thread->id);
             $this->messageRepository->add($newMessage);
             $jsonString = json_encode($jsonArray, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);

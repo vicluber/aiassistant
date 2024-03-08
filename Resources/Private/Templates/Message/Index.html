@@ -1,7 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="Default" />
 <f:section name="content">
-    
     <div id="result">
       <div class="text-center"><img src="{f:uri.resource(path: 'EXT:aiassistant/Resources/Public/Icons/ellipsis.gif')}" width="100" alt="Ellipsis" id="ellipsis" /></div>
     </div>
@@ -12,6 +11,7 @@
         <div class="mb-3">
           <label for="userPrompt" class="form-label"><f:translate key="tx_aiassistant_domain_model_message.user_prompt" />:</label>
           <f:form.textarea property="userPrompt" id="userPrompt" class="form-control" name="userPrompt" rows="3" required="required" />
+          <f:form.hidden name="assistantId" value="{settings.assistantId}" />
         </div>
         <f:form.submit value="Send" class="btn btn-primary mb-3" />
       </f:form>

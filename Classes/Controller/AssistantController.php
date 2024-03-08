@@ -171,7 +171,7 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $this->view->assign('assistants', $assistants);
         return $this->htmlResponse();
     }
-    
+
     /**
      * action request models array
      */
@@ -183,5 +183,16 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             $models[$model->id] = $model->id;
         }
         return $models;
+    }
+
+    /**
+     * Very similar to requestModels but with a returning format compatible with "itemsProcFunc" for filling FlexForms elements
+     */
+    public function fillAssistants(array &$config)
+    {
+        $assistants = $this->assistantRepository->findAll();
+        foreach ($assistants as $assistant) {
+            $config['items'][] = [$assistant->getName(), $assistant->getAssistantId()];
+        }
     }
 }
