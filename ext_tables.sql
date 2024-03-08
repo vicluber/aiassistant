@@ -12,7 +12,8 @@ CREATE TABLE tx_aiassistant_domain_model_message (
 CREATE TABLE tx_aiassistant_domain_model_assistant (
 	assistant_id varchar(255) NOT NULL DEFAULT '',
 	name varchar(255) NOT NULL DEFAULT '',
-	instructions LONGTEXT NOT NULL
+	instructions LONGTEXT NOT NULL,
+	model varchar(255) NOT NULL DEFAULT ''
 );
 
 CREATE TABLE tx_aiassistant_domain_model_files (

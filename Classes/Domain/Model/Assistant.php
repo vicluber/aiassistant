@@ -42,6 +42,13 @@ class Assistant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $name = '';
 
     /**
+     * model
+     *
+     * @var string
+     */
+    protected $model = '';
+
+    /**
      * Returns the assistantId
      *
      * @return string
@@ -102,5 +109,26 @@ class Assistant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setInstructions(string $instructions)
     {
         $this->instructions = $instructions;
+    }
+
+    /**
+     * Returns the model
+     *
+     * @return string
+     */
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    /**
+     * Sets the model
+     *
+     * @param string $model
+     * @return void
+     */
+    public function setModel(string $model)
+    {
+        $this->model = $model;
     }
 }

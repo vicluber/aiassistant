@@ -92,6 +92,12 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     public function newAction(): \Psr\Http\Message\ResponseInterface
     {
+        $response = $this->client->models()->list();
+        $models = [];
+        foreach ($response->data as $model) {
+            $models[$model->id] = $model->id;
+        }
+        $this->view->assign('models', $models);
         return $this->htmlResponse();
     }
 
@@ -111,7 +117,7 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                     'type' => 'code_interpreter',
                 ],
             ],
-            'model' => 'gpt-3.5-turbo',
+            'model' => $newAssistant->getModel(),
         ]);
         $newAssistant->setAssistantId($response->id);
         $this->assistantRepository->add($newAssistant);

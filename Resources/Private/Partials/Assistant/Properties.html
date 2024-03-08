@@ -5,12 +5,16 @@
 		<td>{assistant.assistantId}</td>
 	</tr>
 	<tr>
-		<td><f:translate key="tx_aiassistant_domain_model_assistant.files" /></td>
-		<td>
-				<a href="{assistant.files.originalResource.publicUrl}">
-					{assistant.files.originalResource.name}
-				</a>
-			</td>
+		<td><f:translate key="tx_aiassistant_domain_model_assistant.name" /></td>
+		<td>{assistant.name}</td>
+	</tr>
+	<tr>
+		<td><f:translate key="tx_aiassistant_domain_model_assistant.instructions" /></td>
+		<td>{assistant.instructions}</td>
+	</tr>
+	<tr>
+		<td><f:translate key="tx_aiassistant_domain_model_assistant.model" /></td>
+		<td>{assistant.model}</td>
 	</tr>
 </table>
 </html>
