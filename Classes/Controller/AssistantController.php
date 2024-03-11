@@ -94,19 +94,24 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     public function createAction(\Effective\Aiassistant\Domain\Model\Assistant $newAssistant)
     {
         try {
+            if ($_FILES['file']['error']['file'] === 0) {
+                $uploaded = $this->uploadFile($_FILES['file']['tmp_name']['file'], $_FILES['file']['name']['file']);
+            }
             $response = $this->client->assistants()->create([
                 'instructions' => $newAssistant->getInstructions(),
                 'name' => $newAssistant->getName(),
                 'tools' => [
                     [
-                        'type' => 'code_interpreter',
+                        'type' => 'retrieval',
                     ],
                 ],
                 'model' => $newAssistant->getModel(),
             ]);
+            
             if (isset($response->id)) {
                 $newAssistant->setAssistantId($response->id);
                 $this->assistantRepository->add($newAssistant);
+                if($uploaded != false){ $this->attachFileToAssistant($uploaded, $response->id); }
                 $this->addFlashMessage('The object was successfully created.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
             } else {
                 $this->addFlashMessage('Failed to create the assistant. No ID was returned.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
@@ -163,7 +168,12 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 $this->addFlashMessage('Deletion was not successful.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
             }
         } catch (\Exception $e) {
-            $this->addFlashMessage('An error occurred while deleting the assistant: ' . $e->getMessage(), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+            if(str_contains($e->getMessage(), 'No assistant found with')){
+                $this->addFlashMessage('Local record deleted but there was ' . $e->getMessage(), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+                $this->assistantRepository->remove($assistant);
+            }else{
+                $this->addFlashMessage('Oops!: ' . $e->getMessage(), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+            }
         }
         $absoluteTemplatePath = GeneralUtility::getFileAbsFileName('EXT:aiassistant/Resources/Private/Templates/Assistant/List.html');
         $this->view->setTemplatePathAndFilename($absoluteTemplatePath);
@@ -193,6 +203,47 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $assistants = $this->assistantRepository->findAll();
         foreach ($assistants as $assistant) {
             $config['items'][] = [$assistant->getName(), $assistant->getAssistantId()];
+        }
+    }
+
+    /**
+     * Upload files to OpenAI dashboard
+     */
+    public function uploadFile($temporaryFileName, $originalFileName)
+    {
+        $filename = preg_replace('/[^A-Za-z0-9_.-]/', '', str_replace(' ', '_', $originalFileName));
+        move_uploaded_file($temporaryFileName, '/var/www/html/public/fileadmin/user_upload/' . $filename);
+        $uploadResponse = $this->client->files()->upload([
+            'purpose' => 'assistants',
+            'file' => fopen('/var/www/html/public/fileadmin/user_upload/' . $filename, 'r'),
+        ]);
+        $uploadId = $uploadResponse->id;
+        for ($attempts = 0; $attempts < 2; $attempts++) {
+            sleep(3);
+            $statusResponse = $this->client->files()->retrieve($uploadId);
+            if ($statusResponse->status == 'processed') {
+                return $uploadResponse->id;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Upload files to OpenAI dashboard
+     */
+    public function attachFileToAssistant($fileId, $assistantId)
+    {
+        try {
+            $response = $this->client->assistants()->files()->create($assistantId, [
+                'file_id' => $fileId,
+            ]);
+            if($response->id)
+            {
+                return true;
+            }
+        } catch (\Throwable $th) {
+            var_dump($th);
         }
     }
 }

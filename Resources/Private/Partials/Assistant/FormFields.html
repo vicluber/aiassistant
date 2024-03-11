@@ -1,4 +1,6 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+		xmlns:myext="http://typo3.org/ns/Effective/Aiassistant/ViewHelpers"
+data-namespace-typo3-fluid="true">
 	<label for="assistantId">
 		<f:translate key="tx_aiassistant_domain_model_assistant.name" />
 	</label>
@@ -15,4 +17,7 @@
 	<br />
 	<f:form.select property="model" id="model" options="{models}" />
 	<br />
+	<label for="fileUpload">Upload a file for the assistnat</label>
+    <br />
+    <input type="file" id="fileUpload" name="file[file]" />
 </html>

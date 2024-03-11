@@ -20,7 +20,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
 
     <f:render partial="FormErrors" />
 
-    <f:form action="create" name="newAssistant" object="{newAssistant}">
+    <f:form action="create" name="newAssistant" object="{newAssistant}" enctype="multipart/form-data" method="post">
       <f:render partial="Assistant/FormFields" arguments="{_all}" />
       <f:form.submit value="Create new" />
     </f:form>
