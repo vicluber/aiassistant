@@ -8,6 +8,7 @@ use Effective\Aiassistant\Domain\Repository\AssistantRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 
 /**
  * This file is part of the "OpenAI Asistant" Extension for TYPO3 CMS.
@@ -44,7 +45,7 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      *
      * @param AssistantRepository $assistantRepository
      */
-    public function __construct(AssistantRepository $assistantRepository)
+    public function __construct(protected readonly ModuleTemplateFactory $moduleTemplateFactory, AssistantRepository $assistantRepository)
     {
         $this->assistantRepository = $assistantRepository;
         $this->apiKey = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('aiassistant', 'APIkey');
@@ -60,7 +61,9 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     {
         $assistants = $this->assistantRepository->findAll();
         $this->view->assign('assistants', $assistants);
-        return $this->htmlResponse();
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -72,7 +75,9 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     public function showAction(\Effective\Aiassistant\Domain\Model\Assistant $assistant): \Psr\Http\Message\ResponseInterface
     {
         $this->view->assign('assistant', $assistant);
-        return $this->htmlResponse();
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -83,7 +88,9 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     public function newAction(): \Psr\Http\Message\ResponseInterface
     {
         $this->view->assign('models', $this->requestModels());
-        return $this->htmlResponse();
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -122,7 +129,9 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $absoluteTemplatePath = GeneralUtility::getFileAbsFileName('EXT:aiassistant/Resources/Private/Templates/Assistant/Show.html');
         $this->view->setTemplatePathAndFilename($absoluteTemplatePath);
         $this->view->assign('assistant', $newAssistant);
-        return $this->htmlResponse();
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
 
@@ -137,7 +146,9 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     {
         $this->view->assign('models', $this->requestModels());
         $this->view->assign('assistant', $assistant);
-        return $this->htmlResponse();
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -160,6 +171,7 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     public function deleteAction(\Effective\Aiassistant\Domain\Model\Assistant $assistant)
     {
         try {
+            if($assistant->getAssistantId() == ''){ $assistant->setAssistantId('placeholder'); }
             $response = $this->client->assistants()->delete($assistant->getAssistantId());
             if (isset($response->deleted) && $response->deleted) {
                 $this->assistantRepository->remove($assistant);
@@ -169,17 +181,18 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             }
         } catch (\Exception $e) {
             if(str_contains($e->getMessage(), 'No assistant found with')){
-                $this->addFlashMessage('Local record deleted but there was ' . $e->getMessage(), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+                $this->addFlashMessage('The assistant was successfully deleted.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+                $this->addFlashMessage('No assistant on OpenAI found with that ID', 'Warning', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
                 $this->assistantRepository->remove($assistant);
             }else{
                 $this->addFlashMessage('Oops!: ' . $e->getMessage(), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
             }
         }
-        $absoluteTemplatePath = GeneralUtility::getFileAbsFileName('EXT:aiassistant/Resources/Private/Templates/Assistant/List.html');
-        $this->view->setTemplatePathAndFilename($absoluteTemplatePath);
-        $assistants = $this->assistantRepository->findAll();
-        $this->view->assign('assistants', $assistants);
-        return $this->htmlResponse();
+        /*$absoluteTemplatePath = GeneralUtility::getFileAbsFileName('EXT:aiassistant/Resources/Private/Templates/Assistant/List.html');
+        $this->view->setTemplatePathAndFilename($absoluteTemplatePath);*/
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -242,8 +255,9 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             {
                 return true;
             }
+            
         } catch (\Throwable $th) {
-            var_dump($th);
+            $this->addFlashMessage('Oops!: ' . $e->getMessage(), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
         }
     }
 }
