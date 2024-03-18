@@ -93,6 +93,32 @@
 			<trans-unit id="tx_aiassistant_domain_model_files.assistant.description" resname="tx_aiassistant_domain_model_files.assistant.description">
 				<source>The Assistant To Whom This File Has Been Given</source>
 			</trans-unit>
+
+
+			<trans-unit id="tx_aiassistant_domain_model_assistant.name" resname="tx_aiassistant_domain_model_assistant.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_aiassistant_domain_model_assistant.name-description" resname="tx_aiassistant_domain_model_assistant.name-description">
+				<source>The Assistant's descriptive name</source>
+			</trans-unit>
+			<trans-unit id="tx_aiassistant_domain_model_assistant.model" resname="tx_aiassistant_domain_model_assistant.model">
+				<source>Model</source>
+			</trans-unit>
+			<trans-unit id="tx_aiassistant_domain_model_assistant.model-description" resname="tx_aiassistant_domain_model_assistant.model-description">
+				<source>The OpenAI model your assistant will work on.</source>
+			</trans-unit>
+			<trans-unit id="tx_aiassistant_domain_model_assistant.instructions" resname="tx_aiassistant_domain_model_assistant.instructions">
+				<source>Instructions</source>
+			</trans-unit>
+			<trans-unit id="tx_aiassistant_domain_model_assistant.insctructions-description" resname="tx_aiassistant_domain_model_assistant.insctructions-description">
+				<source>How do you need your assistant behavies</source>
+			</trans-unit>
+			<trans-unit id="tx_aiassistant_domain_model_assistant.file" resname="tx_aiassistant_domain_model_assistant.file">
+				<source>File</source>
+			</trans-unit>
+			<trans-unit id="tx_aiassistant_domain_model_assistant.file-description" resname="tx_aiassistant_domain_model_assistant.file-description">
+				<source>Because the assistant is configured as a retrivial of the information that it answers it needs at least one file to quote on its answers.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -1,23 +1,39 @@
 <html	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
 		xmlns:myext="http://typo3.org/ns/Effective/Aiassistant/ViewHelpers"
 data-namespace-typo3-fluid="true">
-	<label for="assistantId">
-		<f:translate key="tx_aiassistant_domain_model_assistant.name" />
-	</label>
-	<br />
-	<f:form.textfield property="name" id="name" />
-	<label for="assistantId">
-		<f:translate key="tx_aiassistant_domain_model_assistant.instructions" />
-	</label>
-	<br />
-	<f:form.textarea property="instructions" id="instructions" />
-	<label for="assistantId">
-		<f:translate key="tx_aiassistant_domain_model_assistant.model" />
-	</label>
-	<br />
-	<f:form.select property="model" id="model" options="{models}" />
-	<br />
-	<label for="fileUpload">Upload a file for the assistnat</label>
-    <br />
-    <input type="file" id="fileUpload" name="file[file]" />
+	
+	<div class="row">
+		<div class="col">
+			<div class="form-group">
+				<label for="assistantId">
+					<f:translate key="tx_aiassistant_domain_model_assistant.name" />
+				</label>
+				<f:form.textfield property="name" id="name" class="form-control" placeholder="{f:translate(key: 'tx_aiassistant_domain_model_assistant.name')}" />
+				<small id="emailHelp" class="form-text text-muted"><f:translate key="tx_aiassistant_domain_model_assistant.name-description" /></small>
+			</div>
+		</div>
+		<div class="col">
+			<div class="form-group">
+				<label for="assistantId">
+					<f:translate key="tx_aiassistant_domain_model_assistant.model" />
+				</label>
+				<f:form.select property="model" id="model" options="{models}" class="form-control" />
+				<small id="emailHelp" class="form-text text-muted"><f:translate key="tx_aiassistant_domain_model_assistant.model-description" /></small>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="assistantId">
+			<f:translate key="tx_aiassistant_domain_model_assistant.instructions" />
+		</label>
+		<f:form.textarea property="instructions" id="instructions" class="form-control" />
+		<small id="emailHelp" class="form-text text-muted"><f:translate key="tx_aiassistant_domain_model_assistant.instructions" /></small>
+	</div>
+	
+	<div class="form-group">
+		<label for="fileUpload"><f:translate key="tx_aiassistant_domain_model_assistant.file" /></label>
+    	<input type="file" class="form-control-file" id="fileUpload" name="file[file]" />
+		<small id="emailHelp" class="form-text text-muted"><f:translate key="tx_aiassistant_domain_model_assistant.file-description" /></small>
+		<p>This must be fixed, the assistant "type" must be configurable. Also the file should be configurable as "fine-tune" with jsonl files or "assistants" with PDF files. (Now it works just as "assistants")</p>
+	</div>
 </html>

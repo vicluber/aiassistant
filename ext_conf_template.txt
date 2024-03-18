@@ -1,4 +1,2 @@
 # cat=General; type=string; label=OpenAI API
 APIkey =
-# cat=General; type=string; label=Assistant ID from OpenAI dashboard
-AssistantID =

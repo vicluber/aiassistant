@@ -4,7 +4,9 @@
     <h1>Single View for Assistant</h1>
     <f:flashMessages />
     <f:render partial="Assistant/Properties" arguments="{assistant:assistant}" />
-    <f:link.action action="list">Back to list</f:link.action><br />
-    <f:link.action action="new">New Assistant</f:link.action>
+    <div class="d-flex d-flex justify-content-between">
+        <f:link.action action="list" class="btn btn-default">Back to list</f:link.action>
+        <f:link.action action="delete" arguments="{assistant:assistant}" class="btn btn-danger">Delete Assistant</f:link.action>
+    </div>
 </f:section>
 </html>

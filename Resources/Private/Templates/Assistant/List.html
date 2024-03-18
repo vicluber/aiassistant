@@ -1,40 +1,41 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:layout name="Default" />
+<html
+   xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+   xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+   xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+   data-namespace-typo3-fluid="true">
 
-This template is responsible for creating a table of domain objects.
+  <f:layout name="Default" />
+  <f:section name="content">
+      <h1>Assistants</h1>
 
-If you modify this template, do not forget to change the overwrite settings
-in /Configuration/ExtensionBuilder/settings.yaml:
-  Resources:
-    Private:
-      Templates:
-        Assistant:
-          List.html: keep
-
-Otherwise your changes will be overwritten the next time you save the extension in the extension builder
-
-<f:section name="content">
-    <h1>Listing for Assistant</h1>
-
-    <f:flashMessages />
-    <table class="tx_aiassistant">
-        <tr>
+      <f:flashMessages />
+      <table class="tx_aiassistant table">
+        <thead>
+          <tr>
             <th><f:translate key="tx_aiassistant_domain_model_assistant.assistant_id" /></th>
             <th><f:translate key="tx_aiassistant_domain_model_assistant.name" /></th>
             <th><f:translate key="tx_aiassistant_domain_model_assistant.instructions" /></th>
             <th><f:translate key="tx_aiassistant_domain_model_assistant.model" /></th>
-        </tr>
-        <f:for each="{assistants}" as="assistant">
-            <tr>
-                <td><f:link.action action="show" arguments="{assistant : assistant}">{assistant.assistantId}</f:link.action></td>
-                <td><f:link.action action="show" arguments="{assistant : assistant}">{assistant.instructions}</f:link.action></td>
-                <td><f:link.action action="show" arguments="{assistant : assistant}">{assistant.model}</f:link.action></td>
-                <td><f:link.action action="edit" arguments="{assistant : assistant}">Edit</f:link.action></td>
-                <td><f:link.action action="delete" arguments="{assistant : assistant}">Delete</f:link.action></td>
-            </tr>
-        </f:for>
-    </table>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <f:for each="{assistants}" as="assistant">
+              <tr>
+                  <td><f:link.action action="show" arguments="{assistant : assistant}">{assistant.assistantId}</f:link.action></td>
+                  <td><f:link.action action="show" arguments="{assistant : assistant}">{assistant.name}</f:link.action></td>
+                  <td><f:link.action action="show" arguments="{assistant : assistant}">{assistant.instructions}</f:link.action></td>
+                  <td><f:link.action action="show" arguments="{assistant : assistant}">{assistant.model}</f:link.action></td>
+                  <td>
+                    <f:link.action action="show" arguments="{assistant : assistant}">Show</f:link.action>
+                    <f:link.action action="delete" arguments="{assistant : assistant}">Delete</f:link.action>
+                  </td>
+              </tr>
+          </f:for>
+        </tbody>
+      </table>
 
-    <f:link.action action="new">New Assistant</f:link.action>
-</f:section>
+      <f:link.action action="new" class="btn btn-primary">New Assistant</f:link.action>
+  </f:section>
+</html>
 </html>

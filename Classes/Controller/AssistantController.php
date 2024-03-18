@@ -59,8 +59,12 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     public function listAction(): \Psr\Http\Message\ResponseInterface
     {
-        $assistants = $this->assistantRepository->findAll();
-        $this->view->assign('assistants', $assistants);
+        if($this->apiKey == ""){
+            $this->addFlashMessage('It seems that the API key is missing from the configuration. Set your API key in "Extension Configuration".', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        }else{
+            $assistants = $this->assistantRepository->findAll();
+            $this->view->assign('assistants', $assistants);
+        }
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $moduleTemplate->setContent($this->view->render());
         return $this->htmlResponse($moduleTemplate->renderContent());
@@ -74,6 +78,7 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     public function showAction(\Effective\Aiassistant\Domain\Model\Assistant $assistant): \Psr\Http\Message\ResponseInterface
     {
+        
         $this->view->assign('assistant', $assistant);
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $moduleTemplate->setContent($this->view->render());
@@ -87,7 +92,11 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     public function newAction(): \Psr\Http\Message\ResponseInterface
     {
-        $this->view->assign('models', $this->requestModels());
+        if($this->apiKey == ""){
+            $this->addFlashMessage('It seems that the API key is missing from the configuration. Set your API key in "Extension Configuration".', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        }else{
+            $this->view->assign('models', $this->requestModels());
+        }
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $moduleTemplate->setContent($this->view->render());
         return $this->htmlResponse($moduleTemplate->renderContent());

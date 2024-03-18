@@ -1,3 +1,9 @@
+page {
+    includeJSFooter {
+        aiassistantSubmit = EXT:aiassistant/Resources/Public/JavaScript/main.js
+        aiassistantJquery35 = EXT:aiassistant/Resources/Public/JavaScript/jquery-3-5-min.js
+    }
+}
 plugin.tx_aiassistant_chatform {
     view {
         templateRootPaths.0 = EXT:aiassistant/Resources/Private/Templates/
