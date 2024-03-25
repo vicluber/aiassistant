@@ -106,28 +106,32 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      * action create
      *
      * @param \Effective\Aiassistant\Domain\Model\Assistant $newAssistant
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function createAction(\Effective\Aiassistant\Domain\Model\Assistant $newAssistant)
+    public function createAction(\Effective\Aiassistant\Domain\Model\Assistant $newAssistant): \Psr\Http\Message\ResponseInterface
     {
+        
         try {
             if ($_FILES['file']['error']['file'] === 0) {
                 $uploaded = $this->uploadFile($_FILES['file']['tmp_name']['file'], $_FILES['file']['name']['file']);
             }
+            $tools = [];
+            if($newAssistant->getRetrieval()){
+                $tools[] = ['type' => 'retrieval'];
+            }
             $response = $this->client->assistants()->create([
                 'instructions' => $newAssistant->getInstructions(),
                 'name' => $newAssistant->getName(),
-                'tools' => [
-                    [
-                        'type' => 'retrieval',
-                    ],
-                ],
+                'tools' => $tools,
                 'model' => $newAssistant->getModel(),
             ]);
             
             if (isset($response->id)) {
                 $newAssistant->setAssistantId($response->id);
                 $this->assistantRepository->add($newAssistant);
-                if($uploaded != false){ $this->attachFileToAssistant($uploaded, $response->id); }
+                if(isset($uploaded)){
+                    if($uploaded != false){ $this->attachFileToAssistant($uploaded, $response->id); }
+                }
                 $this->addFlashMessage('The object was successfully created.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
             } else {
                 $this->addFlashMessage('Failed to create the assistant. No ID was returned.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
@@ -135,9 +139,6 @@ class AssistantController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         } catch (\Exception $e) {
             $this->addFlashMessage('An error occurred while creating the assistant: ' . $e->getMessage(), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
         }
-        $absoluteTemplatePath = GeneralUtility::getFileAbsFileName('EXT:aiassistant/Resources/Private/Templates/Assistant/Show.html');
-        $this->view->setTemplatePathAndFilename($absoluteTemplatePath);
-        $this->view->assign('assistant', $newAssistant);
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $moduleTemplate->setContent($this->view->render());
         return $this->htmlResponse($moduleTemplate->renderContent());

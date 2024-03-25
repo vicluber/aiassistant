@@ -2,9 +2,6 @@
     <sheets>
         <sDEF>
             <ROOT>
-                <TCEforms>
-                    <sheetTitle>Example Sheet</sheetTitle>
-                </TCEforms>
                 <el>
                     <settings.assistantId>
                         <TCEforms>
@@ -19,7 +16,25 @@
                             </config>
                         </TCEforms>
                     </settings.assistantId>
-
+                    <settings.pluginType>
+                        <TCEforms>
+                            <label>Plugin type (full size or minified chat)</label>
+                            <config>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
+                                <items type="array">
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0">Full size chat</numIndex>
+                                        <numIndex index="1">fullsize</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1" type="array">
+                                        <numIndex index="0">Minified chat</numIndex>
+                                        <numIndex index="1">minified</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </settings.pluginType>
                 </el>
             </ROOT>
         </sDEF>

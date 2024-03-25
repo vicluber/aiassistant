@@ -20,7 +20,7 @@ return [
         'iconfile' => 'EXT:aiassistant/Resources/Public/Icons/tx_aiassistant_domain_model_assistant.gif'
     ],
     'types' => [
-        '1' => ['showitem' => 'assistant_id, name, instructions, model, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language, sys_language_uid, l10n_parent, l10n_diffsource, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
+        '1' => ['showitem' => 'assistant_id, name, instructions, model, retrieval, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language, sys_language_uid, l10n_parent, l10n_diffsource, --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, hidden, starttime, endtime'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -136,6 +136,15 @@ return [
                 'size' => 30,
                 'eval' => 'trim',
                 'default' => ''
+            ],
+        ],
+        'retrieval' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aiassistant/Resources/Private/Language/locallang_db.xlf:tx_aiassistant_domain_model_assistant.retrieval',
+            'description' => 'LLL:EXT:aiassistant/Resources/Private/Language/locallang_db.xlf:tx_aiassistant_domain_model_assistant.retrieval.description',
+            'config' => [
+                'type' => 'check',
+                'default' => false
             ],
         ]
     ],

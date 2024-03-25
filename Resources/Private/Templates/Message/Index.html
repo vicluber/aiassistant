@@ -1,52 +1,21 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="Default" />
 <f:section name="content">
-  <div class="row h-100" style="margin-top: 10rem;">
-    
-    <div class="col-1"></div>
-    <div class="col-10">
-      <div class="effie-container">
-        <div class="box d-flex flex-column justify-content-between">
-          <div id="result" class="p-4">
-            <f:flashMessages />
-            <f:render partial="FormErrors" />
-          </div>
-          <f:form action="create" name="newMessage" object="{newMessage}" id="simpleForm">
-            <f:form.hidden name="assistantId" value="{settings.assistantId}" />
-            <div class="d-flex">
-              <div class="w-100 p-4">
-                <f:form.textfield property="userPrompt" id="userPrompt" class="form-control ebot-input" name="userPrompt" placeholder="Deine Frage..." required="required" />
-              </div>
-              <div class="flex-shrink-1 p-3 justify-content-center flex-column d-flex">
-                <img id="submitButton" src="https://ef-world-typo3.ddev.site/fileadmin/ebot/send_green_50x50.png" />
-              </div>
-            </div>
-          </f:form>
-          
-        </div>
-        <div class="d-flex flex-wrap">
-          
-          <div class="prompt-suggestions pe-1 pb-2">
-            <div><p>Mit welchen Kunden hat effective world bereits zusammengearbeitet?&nbsp;</p></div>
-          </div>
-          <div class="prompt-suggestions  ps-1 pb-2">
-            <div><p>In welchen Bereich/Bereichen liegt die Expertise von effective-world</p></div>
-          </div><div class="prompt-suggestions  pe-1 pb-2">
-            <div><p>Wie misst effective world den Erfolg von Projekten?</p></div>
-          </div>
-          <div class="prompt-suggestions  ps-1 pb-2">
-            <div><p>Wie läuft eine Zusammenarbeit vertraglich mit effective ab?</p></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-1 position-relative">
-      <div style="position: absolute; left: 50px; bottom: 0px;">
-            <div class="bubble bubble-bottom-left" style="right: -200px; top: -319px;">What can I do for you today?</div>
-            <img class="effie-png-1" src="https://ef-world-typo3.ddev.site/fileadmin/ebot/Chatbot_H5_Links.png" width="150" style="translate: 0 -100%; position: absolute; display: block; top: 0px; left: 0px;">
-            <img class="effie-png-2" src="https://ef-world-typo3.ddev.site/fileadmin/ebot/Chatbot_H5_rechts.png" width="150" style="translate: 0 -100%; position: absolute; display: block; top: 0px; left: 0px; opacity: 0;">
-          </div>
-    </div>
-  </div>
+
+    <f:if condition="{settings.assistantId}">
+      <f:then>
+        <f:if condition="{settings.pluginType} == 'fullsize'">
+          <f:then>
+            <f:render partial="Message/FullSizeChat" arguments="{settings: settings}" />
+          </f:then>
+          <f:else>
+            <f:render partial="Message/MinifiedChat" arguments="{settings: settings}" />
+          </f:else>
+        </f:if>
+      </f:then>
+      <f:else>
+        <h1>Assistant id missing. Please set one in the plugin's configuration</h1>
+      </f:else>
+    </f:if>
 </f:section>
 </html>

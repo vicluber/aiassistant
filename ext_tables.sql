@@ -13,7 +13,8 @@ CREATE TABLE tx_aiassistant_domain_model_assistant (
 	assistant_id varchar(255) NOT NULL DEFAULT '',
 	name varchar(255) NOT NULL DEFAULT '',
 	instructions LONGTEXT NOT NULL,
-	model varchar(255) NOT NULL DEFAULT ''
+	model varchar(255) NOT NULL DEFAULT '',
+	retrieval TINYINT(1) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE tx_aiassistant_domain_model_files (

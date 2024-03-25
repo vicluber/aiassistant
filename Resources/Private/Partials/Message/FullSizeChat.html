@@ -1,0 +1,59 @@
+<div class="position-relative" id="9000">
+    <h2 class="mainheader" style="margin-bottom: 20px;">Verstärkt durch KI</h2>
+    <p>&nbsp;</p>
+    <div class="effie-intro">
+      <div class="bubble bubble-bottom-left">Hi, Ich bin Effie</div>
+      <img class="effie-png-1" src="https://ef-world-typo3.ddev.site/fileadmin/ebot/Chatbot_H5_Links.png" width="150" style="translate: 0 -100%; position: absolute; display: block; top: 0px; left: 0px;">
+      <img class="effie-png-2" src="https://ef-world-typo3.ddev.site/fileadmin/ebot/Chatbot_H5_rechts.png" width="150" style="translate: 0 -100%; position: absolute; display: block; top: 0px; left: 0px; opacity: 0;">
+    </div>
+</div>
+<div class="row" id="effie-plugin">
+    <div class="col-1 d-xl-flex d-none"></div>
+    <div class="col-12 col-lg-9 col-xl-10">
+    <div class="effie-container">
+        <div class="animated-border p-4 chat-container d-flex flex-column justify-content-between">
+        <f:flashMessages />
+        <f:render partial="FormErrors" />
+        <div id="result">
+            <f:comment><div class="scrollbar" id="style-3">
+            <div class="force-overflow"></div>
+            </div></f:comment>
+        </div>
+        <f:form action="create" name="newMessage" object="{newMessage}" id="chatForm">
+            <f:form.hidden name="assistantId" value="{settings.assistantId}" />
+            <div class="d-flex">
+            <div class="w-100 position-relative">
+                <f:form.textfield property="userPrompt" id="userPrompt" class="ebot-input" name="userPrompt" placeholder="Deine Frage..." required="required" />
+                <img id="SmallsubmitButton" class="position-absolute SmallsubmitButton d-lg-none d-block" src="https://ef-world-typo3.ddev.site/fileadmin/ebot/send_green_50x50.png" />
+            </div>
+            <div class="flex-shrink-1 justify-content-center flex-column d-none d-lg-flex">
+                <img id="submitButton" class="ps-4" src="https://ef-world-typo3.ddev.site/fileadmin/ebot/send_green_50x50.png" />
+            </div>
+            </div>
+        </f:form>
+        
+        </div>
+        <div class="d-flex flex-wrap  d-none d-xl-flex">
+        
+        <div class="prompt-suggestions pe-1 pb-2">
+            <div><p>Mit welchen Kunden hat effective world bereits zusammengearbeitet?&nbsp;</p></div>
+        </div>
+        <div class="prompt-suggestions  ps-1 pb-2">
+            <div><p>In welchen Bereich/Bereichen liegt die Expertise von effective-world</p></div>
+        </div><div class="prompt-suggestions  pe-1 pb-2">
+            <div><p>Wie misst effective world den Erfolg von Projekten?</p></div>
+        </div>
+        <div class="prompt-suggestions  ps-1 pb-2">
+            <div><p>Wie läuft eine Zusammenarbeit vertraglich mit effective ab?</p></div>
+        </div>
+        </div>
+    </div>
+    </div>
+    <div class="d-none d-lg-flex col-lg-3 col-xl-1 position-relative">
+        <div class="effie-animation">
+            <div class="bubble bubble-bottom-left">What can I do for you today?</div>
+            <img class="effie-png-1" src="https://ef-world-typo3.ddev.site/fileadmin/ebot/Chatbot_H5_Links.png" width="150" style="translate: 0 -100%; position: absolute; display: block; top: 0px; left: 0px;">
+            <img class="effie-png-2" src="https://ef-world-typo3.ddev.site/fileadmin/ebot/Chatbot_H5_rechts.png" width="150" style="translate: 0 -100%; position: absolute; display: block; top: 0px; left: 0px; opacity: 0;">
+        </div>
+    </div>
+</div>

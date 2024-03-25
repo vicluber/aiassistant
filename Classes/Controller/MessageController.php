@@ -125,8 +125,6 @@ class MessageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $assistantId = $_POST['tx_aiassistant_chatform']['assistantId'];
             if(isset($assistant)){
                 $assistant = $this->assistantRepository->findOneByAssistantId($assistantId);
-                var_dump($assistant);
-                die();
                 $newMessage->setAssistant($assistant);
             }
         }
@@ -140,7 +138,7 @@ class MessageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $completedRun = $this->client->threads()->messages()->list($thread->id, ['limit' => 10]);
             $response = $this->responseFactory->createResponse();
             $jsonArray = [
-            'answer' => $completedRun->toArray()['data'][0]['content'][0]['text']['value']
+                'answer' => $completedRun->toArray()['data'][0]['content'][0]['text']['value']
             ];
             $newMessage->setAssistantAnswer($jsonArray['answer']);
             $newMessage->setThread($thread->id);

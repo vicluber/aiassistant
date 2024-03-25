@@ -1,0 +1,12 @@
+<div class="position-absolute minifiedChat-container" style="right: 40px; bottom: 40px; z-index: 1000;">
+    <img src="https://ef-world-typo3.ddev.site/fileadmin/ebot/e-Bot_green_50x50.png" style="cursor: pointer;" id="minifiedChatShowButton" />
+    <div style="display: none; max-height: 800px; width: 450px;" class="p-4 animated-border" id="minifiedChat">
+        <div id="result" class=""></div>
+        <f:form action="create" name="newMessage" object="{newMessage}" id="minifiedChatForm">
+            <f:form.hidden name="assistantId" value="{settings.assistantId}" />
+                <f:form.textarea property="userPrompt" id="userPrompt" class="ebot-input-textarea w-100" name="userPrompt" placeholder="Deine Frage..." required="required" />
+                <img id="submitButton" style="bottom: 45px;
+                right: 30px;" class="position-absolute" src="https://ef-world-typo3.ddev.site/fileadmin/ebot/send_green_50x50.png" />
+        </f:form>
+    </div>
+</div>

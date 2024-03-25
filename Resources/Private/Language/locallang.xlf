@@ -93,8 +93,6 @@
 			<trans-unit id="tx_aiassistant_domain_model_files.assistant.description" resname="tx_aiassistant_domain_model_files.assistant.description">
 				<source>The Assistant To Whom This File Has Been Given</source>
 			</trans-unit>
-
-
 			<trans-unit id="tx_aiassistant_domain_model_assistant.name" resname="tx_aiassistant_domain_model_assistant.name">
 				<source>Name</source>
 			</trans-unit>
@@ -109,6 +107,9 @@
 			</trans-unit>
 			<trans-unit id="tx_aiassistant_domain_model_assistant.instructions" resname="tx_aiassistant_domain_model_assistant.instructions">
 				<source>Instructions</source>
+			</trans-unit>
+			<trans-unit id="tx_aiassistant_domain_model_assistant.retrieval" resname="tx_aiassistant_domain_model_assistant.retrieval">
+				<source>Retrieval</source>
 			</trans-unit>
 			<trans-unit id="tx_aiassistant_domain_model_assistant.insctructions-description" resname="tx_aiassistant_domain_model_assistant.insctructions-description">
 				<source>How do you need your assistant behavies</source>

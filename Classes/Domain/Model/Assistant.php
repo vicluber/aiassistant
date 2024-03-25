@@ -42,6 +42,13 @@ class Assistant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $name = '';
 
     /**
+     * retrieval
+     *
+     * @var bool
+     */
+    protected $retrieval = false;
+
+    /**
      * model
      *
      * @var string
@@ -130,5 +137,26 @@ class Assistant extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setModel(string $model)
     {
         $this->model = $model;
+    }
+
+    /**
+     * Returns the retrieval
+     *
+     * @return bool
+     */
+    public function getRetrieval()
+    {
+        return $this->retrieval;
+    }
+
+    /**
+     * Sets the retrieval
+     *
+     * @param bool $retrieval
+     * @return void
+     */
+    public function setRetrieval(bool $retrieval)
+    {
+        $this->retrieval = $retrieval;
     }
 }
